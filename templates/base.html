@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock %}</title>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="static/css/style.css">
+    {% block css %}{% endblock %}
+
+</head>
+<body>
+    
+    <button id="btn" class="bx bx-menu"></button>
+
+    <div class="sidebar">
+        <div class="top">
+            <div class="logo">
+                <i class="bx bxl-codepen"></i>
+                <span>TheCedTech</span>
+            </div>
+        </div>
+
+        <ul>
+            <li>
+                <a href="/">
+                    <i class="bx bxs-grid-alt"></i>
+                    <span class="nav-item">Présentation</span>
+                </a>
+            </li>
+        </ul>
+
+    </div>
+
+    <div class="main-content">
+        {% block content %}{% endblock %}
+    </div>
+
+    <button class="theme-btn" id="theme-btn">Dark Theme</button>
+    
+
+    <script src="static/js/script.js"></script>
+    {% block script %}{% endblock %}
+
+</body>
+</html>

@@ -1,0 +1,156 @@
+.container {
+    justify-content: space-between;
+    display:flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    align-items: center;
+
+}
+
+body, html {
+    background-image: url("../images/fond.jpg"); 
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.5s ease;
+}
+
+.box {
+    width: 80vw; 
+    margin-top : 20%;
+    max-width: 1000px;
+    padding: 2vh; /* Ajuste les paddings en fonction de la hauteur et de la largeur de la fenêtre */
+    text-align: center;
+    background: rgba(106, 96, 96, 0.9);
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+
+/* Style du titre */
+h1 {
+    color: #f4f4f4;
+    margin-bottom: 10%;
+}
+h4 {
+    color: #511384;
+    margin-bottom: 5px;
+}
+
+/* Style du formulaire */
+form {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+/* Barre de recherche */
+input[type="text"] {
+    width: 80%; /* Augmenter la largeur de la barre de recherche */
+    padding: 15px; /* Augmenter la hauteur pour qu'elle soit plus grande */
+    font-size: 18px; /* Augmenter la taille du texte */
+    border-radius: 25px;
+    border: none;
+    background: rgba(255, 255, 255, 0.8); /* Transparence */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Ombre légère */
+}
+
+input[type="text"]:focus {
+    outline: none;
+    box-shadow: 0 4px 8px rgba(228, 227, 227, 0.4);
+}
+
+/* Bouton de soumission */
+input[type="submit"] {
+    padding: 12px 30px;
+    font-size: 16px;
+    background-color: #333;
+    color: white;
+    border: none;
+    border-radius: 25px;
+    margin-top: 15px ;
+    cursor: pointer;
+}
+
+/* Style du tableau */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 12px;
+    text-align: left;
+}
+
+th {
+    background-color: #333;
+    color: white;
+}
+
+tr:hover {
+    background-color: #f1f1f1;
+}
+
+/* Message d'absence de résultats */
+.no-results {
+    text-align: center;
+    color: #ffffff;
+    margin-top: 20px;
+}
+
+/* Style du score numérique */
+.score-text {
+    margin-left: 10px; /* Espacement entre la barre et le score */
+    display: inline-block; /* Affiche le score sur la même ligne */
+    font-weight: bold; /* Met en valeur le score */
+}
+
+.folder-list {
+    margin-top: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center; /* Centre les dossiers au milieu de la page */
+    gap: 20px; /* Espace constant entre chaque dossier */
+}
+.folder-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 10px;
+    position: relative;
+}
+.folder-icon {
+    width: 50px; /* Ajustez la taille de l'icône ici */
+    height: 50px; /* Ajustez la taille de l'icône ici */
+}
+.folder-name {
+    color: white;
+    margin-top: 5px;
+    text-align: center;
+    font-weight: bold;
+}
+.folder-popup {
+    position: absolute;
+    top: 90px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #333;
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+    z-index: 1000;
+    max-width: 300px; /* Ajustez la largeur de la fenêtre contextuelle ici */
+    text-align: left;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.folder-popup a {
+    color: white;
+    text-decoration: none;
+}

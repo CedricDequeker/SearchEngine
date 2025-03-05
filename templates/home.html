@@ -1,0 +1,604 @@
+{% extends "base.html" %}
+
+{% block title %}Accueil{% endblock %}
+
+{% block css %}
+    <style>
+    .container {
+        justify-content: center;
+        display:flex;
+        flex-wrap: wrap;
+        flex-direction: row;
+        align-items: stretch;
+        height: 85vh;
+    }   
+
+    .input-container {
+        position: fixed;
+        bottom: 10%;
+        width: 60%;
+        left : 20%;
+        padding: 10px;
+        border-top: 2px solid #ccc;
+        background-color: #fff;
+        z-index: 1;
+        display: flex; /* Flexbox pour un meilleur alignement */
+        justify-content: space-between; /* Espacement entre l'input et le bouton */
+    }
+
+    .input-container input {
+        flex: 1;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 16px;
+    }
+
+    .send-btn {
+        background-color: #304f70;
+        border: none;
+        padding: 10px;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .send-btn img {
+        width: 30px;
+        height: 30px;
+    }
+
+    #history-btn {
+    position: fixed;
+    bottom: 10px;
+    left: 10px;
+    padding: 10px 15px;
+    cursor: pointer;
+    border-radius: 5px;
+    background-color: #333;
+    color: white;
+    border: none;
+    }
+
+    #history-box {
+    position: fixed;
+    bottom: 50px;
+    left: 10px;
+    width: 200px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    padding: 10px;
+    z-index: 2;
+    transition: opacity 0.3s ease;
+    opacity: 0;
+    pointer-events: none; /* Prevent interaction when hidden */
+    overflow: hidden;
+    }
+
+    #history-box a {
+    text-decoration: none;
+    color: #000;
+    }
+
+    #history-box a:hover {
+        text-decoration: underline;
+    }
+
+    .results-container {
+    position: absolute;
+    width: 100%; 
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    max-height: 300px;
+    overflow-y: auto;
+    display: none;
+    z-index: 10;
+    }
+
+    .results-container a {
+        display: block;
+        padding: 10px;
+        text-decoration: none;
+        color: black;
+        border-bottom: 1px solid #eee;
+    }
+
+    .results-container a:hover {
+        cursor: pointer;
+        background: #f0f0f0;
+    }
+
+    .loader {
+        display: none;
+        bottom: 15%;
+        width: fit-content;
+        font-size: 50px;
+        font-family: monospace;
+        font-weight: bold;
+        text-transform: uppercase;
+        color: #0000;
+        /*-webkit-text-stroke: 3px #8a2be2;*/
+        --g: conic-gradient(#304f70 0 0) no-repeat text;
+        background:
+            var(--g) 0,
+            var(--g) 1ch,
+            var(--g) 2ch,
+            var(--g) 3ch,
+            var(--g) 4ch,
+            var(--g) 5ch,
+            var(--g) 6ch;
+        animation:
+            l20-0 1.5s linear infinite alternate,
+            l20-1 3s linear infinite;
+        position: absolute; 
+        left: 50%; 
+        transform: translate(-50%, -50%); /* Ajuster le centre exact */
+    }
+    .loader:before {
+        content: "Loading";
+    }
+    @keyframes l20-0 {
+    0% {
+        background-size:
+        1ch 0,
+        1ch 0,
+        1ch 0,
+        1ch 0,
+        1ch 0,
+        1ch 0,
+        1ch 0;
+    }
+    25% {
+        background-size:
+        1ch 100%,
+        1ch 50%,
+        1ch 0,
+        1ch 0,
+        1ch 0,
+        1ch 50%,
+        1ch 100%;
+    }
+    50% {
+        background-size:
+        1ch 100%,
+        1ch 100%,
+        1ch 50%,
+        1ch 0,
+        1ch 50%,
+        1ch 100%,
+        1ch 100%;
+    }
+    75% {
+        background-size:
+        1ch 100%,
+        1ch 100%,
+        1ch 100%,
+        1ch 50%,
+        1ch 100%,
+        1ch 100%,
+        1ch 100%;
+    }
+    to {
+        background-size:
+        1ch 100%,
+        1ch 100%,
+        1ch 100%,
+        1ch 100%,
+        1ch 100%,
+        1ch 100%,
+        1ch 100%;
+    }
+    }
+    @keyframes l20-1 {
+    0%,
+    50% {
+        background-position-y: 100%;
+    }
+    50.01%,
+    to {
+        background-position-y: 0;
+    }
+    }
+
+    #drop-area {
+        position : fixed;
+        top: 70%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 30%;
+        padding: 20px;
+        border: 2px dashed #304f70;
+        text-align: center;
+        background-color: #f9f9f9;
+        cursor: pointer;
+        z-index: 1;
+    }
+
+    #drop-area.highlight {
+        border-color: #ff0000;
+        background-color: #e0e0e0;
+        z-index: 1;
+    }
+
+    #drop-area p {
+        margin: 0;
+        font-size: 16px;
+        color: #304f70;
+        z-index: 1;
+    }
+
+    .folder-list {
+        margin-top: 20px;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center; /* Centre les dossiers au milieu de la page */
+        gap: 20px; /* Espace constant entre chaque dossier */
+        position : fixed;
+        top: 55%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 2;
+    }
+    .folder-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin: 10px;
+        position: relative;
+    }
+    .folder-icon {
+        width: 50px; /* Ajustez la taille de l'icône ici */
+        height: 50px; /* Ajustez la taille de l'icône ici */
+    }
+    .folder-name {
+        color: rgb(75, 39, 113);
+        margin-top: 5px;
+        text-align: center;
+        font-weight: bold;
+    }
+    .folder-popup {
+        position: absolute;
+        top: 90px;
+        left: 50%;
+        transform: translateX(-50%);
+        background-color: #333;
+        color: white;
+        padding: 10px;
+        border-radius: 5px;
+        z-index: 1000;
+        max-width: 300px; /* Ajustez la largeur de la fenêtre contextuelle ici */
+        text-align: left;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    .folder-popup a {
+        color: white;
+        text-decoration: none;
+    }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <div class="title-container">
+        <h1>Welcome to FinderChat</h1>
+        <p>Discover my search engine with integrated chatbot !</p>
+        <p>Search through your documents and discover the power of RAG...</p>
+    </div>
+
+    <div class="loader"></div>
+
+    <div id="folder-list" class="folder-list"></div>
+
+    <div id="drop-area">
+        <p>Drag and drop a file here or click to select</p>
+        <input type="file" id="file-input" accept=".pdf,.txt,.xls,.xlsx" hidden>
+    </div>
+
+    <form class="input-container" id="query-form">
+        <input type="text" id="query-input" name="query" placeholder="Send a question and find your doc" required>
+        <div id="search-results" class="results-container"></div>
+        <button type="submit" class="send-btn">
+            <img src="static/images/send_icon.png" alt="Envoyer">
+        </button>
+    </form>
+
+<button id="history-btn" class="bx bx-history"></button>
+<div id="history-box"></div>
+<form id="history-form" method="POST" action="/history" style="display: none;">
+    <input type="hidden" name="history" id="history-input">
+</form>
+
+{% endblock %}
+
+{% block script %}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            let historyBox = document.getElementById('history-box');
+            let historyForm = document.getElementById('history-form');
+            let historyInput = document.getElementById('history-input');
+
+            document.getElementById('history-btn').addEventListener('mouseover', function() {
+                fetch('/get-history')
+                    .then(response => response.json())
+                    .then(data => {
+                        historyBox.innerHTML = ''; // Clear previous content
+                        data.forEach(item => {
+                            let p = document.createElement('p');
+                            let a = document.createElement('a');
+                            a.href = '#';
+                            a.textContent = item;
+                            a.addEventListener('click', function(event) {
+                                event.preventDefault();
+                                historyInput.value = item;
+                                historyForm.submit();
+                            });
+                            p.appendChild(a);
+                            historyBox.appendChild(p);
+                        });
+                        historyBox.style.opacity = '1';
+                        historyBox.style.pointerEvents = 'auto'; // Enable interaction when visible
+                    });
+            });
+
+            document.getElementById('history-btn').addEventListener('mouseout', function() {
+                setTimeout(function() {
+                    if (!historyBox.matches(':hover')) {
+                        historyBox.style.opacity = '0';
+                        historyBox.style.pointerEvents = 'none'; // Prevent interaction when hidden
+                    }
+                }, 100);
+            });
+
+            historyBox.addEventListener('mouseout', function() {
+                setTimeout(function() {
+                    if (!historyBox.matches(':hover') && !document.getElementById('history-btn').matches(':hover')) {
+                        historyBox.style.opacity = '0';
+                        historyBox.style.pointerEvents = 'none'; // Prevent interaction when hidden
+                    }
+                }, 100);
+            });
+
+            historyBox.addEventListener('mouseover', function() {
+                historyBox.style.opacity = '1';
+                historyBox.style.pointerEvents = 'auto'; // Enable interaction when visible
+            });    
+
+        });
+
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const form = document.getElementById('query-form');
+            const input = document.getElementById('query-input');
+            const resultsContainer = document.createElement('div');
+            resultsContainer.id = 'search-results';
+            resultsContainer.className = 'results-container';
+            document.body.appendChild(resultsContainer);
+
+            const loadingScreen = document.getElementsByClassName('loader');
+
+
+            // Cacher les résultats si on clique en dehors
+            document.addEventListener('click', function (event) {
+                    if (!form.contains(event.target) && !resultsContainer.contains(event.target)) {
+                        resultsContainer.style.display = 'none';
+                    }
+            });
+
+            // Recalculer la position lors du redimensionnement de la fenêtre
+            window.addEventListener('resize', function () {
+                if (resultsContainer.style.display === 'block') {
+                    const inputRect = input.getBoundingClientRect();
+                    resultsContainer.style.top = `${inputRect.bottom + window.scrollY}px`;
+                    resultsContainer.style.left = `${inputRect.left}px`;
+                    resultsContainer.style.width = `${inputRect.width}px`;
+                }
+            });
+
+            form.addEventListener('submit', function (event) {
+                event.preventDefault(); // Empêche le rechargement de la page
+
+                const query = input.value.trim();
+
+                if (!query) return;
+
+                const formData = new URLSearchParams();
+                formData.append('query', query);
+
+                fetch('/search', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    resultsContainer.innerHTML = ''; // Nettoyer les anciens résultats                
+                    
+                    data.forEach(item => {
+                        const filePath = item[0];  // Le chemin du fichier
+                        const score = item[1];  // Le score de pertinence
+                            
+                        // Création du lien et ajout du score à l'affichage
+                        const resultDiv = document.createElement('div');
+                        resultDiv.className = 'result-item';
+                            
+                        const link = document.createElement('a');
+                        link.textContent = `${filePath} (Score: ${score.toFixed(2)})`;  // Affiche le chemin et le score
+                        
+                        resultDiv.addEventListener('click', function () {
+                            loadingScreen[0].style.display = 'block'; 
+                            window.location.href = `/chatbot?query=${encodeURIComponent(query)}&filePath=${encodeURIComponent(filePath)}`;
+                        });
+
+                        resultDiv.appendChild(link);
+                        resultsContainer.appendChild(resultDiv);
+
+                    });
+
+                    const resultDiv= document.createElement('div');
+                    resultDiv.className = 'result-item';
+                    const link = document.createElement('a');
+                    link.textContent = 'Not sure ? Try the general chatbot !';
+                    resultDiv.addEventListener('click', function () {
+                        loadingScreen[0].style.display = 'block'; 
+                        window.location.href = `/chatbot?query=${encodeURIComponent(query)}`;
+                    });
+                    resultDiv.appendChild(link);
+                    resultsContainer.appendChild(resultDiv);
+
+                    // Ajuster dynamiquement la position sous l'input
+                    const inputRect = input.getBoundingClientRect();
+                    resultsContainer.style.top = `${inputRect.bottom + window.scrollY}px`;
+                    resultsContainer.style.left = `${inputRect.left}px`;
+                    resultsContainer.style.width = `${inputRect.width}px`;
+                    resultsContainer.style.display = 'block'; // Afficher les résultats 
+
+                    
+                });
+            });
+        });
+
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const dropArea = document.getElementById('drop-area');
+            const fileInput = document.getElementById('file-input');
+
+            // Empêcher le comportement par défaut du navigateur
+            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+                dropArea.addEventListener(eventName, (e) => e.preventDefault());
+            });
+
+            // Ajouter un effet visuel lors du drag & drop
+            ['dragenter', 'dragover'].forEach(eventName => {
+                dropArea.addEventListener(eventName, () => dropArea.classList.add('highlight'));
+            });
+
+            ['dragleave', 'drop'].forEach(eventName => {
+                dropArea.addEventListener(eventName, () => dropArea.classList.remove('highlight'));
+            });
+
+            // Gérer le drop des fichiers
+            dropArea.addEventListener('drop', (event) => {
+                let file = event.dataTransfer.files[0]; // Prend le premier fichier
+                uploadFile(file);
+            });
+
+            // Gérer le clic sur la zone pour ouvrir le file picker
+            dropArea.addEventListener('click', () => fileInput.click());
+
+            // Gérer l'input file
+            fileInput.addEventListener('change', () => {
+                let file = fileInput.files[0];
+                uploadFile(file);
+            });
+
+            function uploadFile(file) {
+                if (!file) return;
+
+                let formData = new FormData();
+                formData.append('file', file);
+
+                fetch('/upload', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        console.log('Fichier enregistré temporairement:', data.file_path);
+
+                        // Faire une requête GET vers /chatbot avec le chemin du fichier
+                        window.location.href = `/chatbot?filePath=${encodeURIComponent(data.file_path)}`;
+                    } else {
+                        console.error('Erreur lors de l\'upload');
+                    }
+                })
+                .catch(error => console.error('Erreur:', error));
+            }
+        });
+
+
+        document.addEventListener("DOMContentLoaded", function() {
+            fetch('/subfolders')
+                .then(response => response.json())
+                .then(data => {
+                const folderList = document.getElementById('folder-list');
+                
+                data.forEach(folder => {
+                    const folderItem = document.createElement('div');
+                    folderItem.className = 'folder-item';
+                    folderItem.innerHTML = `
+                    <img src="static/images/folder-icon.png" alt="Folder Icon" class="folder-icon">
+                    <span class="folder-name">${folder}</span>
+                    <div class="folder-popup" id="popup-${folder}" style="display: none;"></div>
+                    `;
+                    folderList.appendChild(folderItem);
+                    
+                    let hideTimeout; // variable pour gérer le délai de masquage
+
+                    // Fonction qui affiche la popup
+                    function showPopup() {
+                    // Masquer les autres popups (si besoin)
+                    document.querySelectorAll('.folder-popup').forEach(p => {
+                        if (p.id !== `popup-${folder}`) {
+                        p.style.display = 'none';
+                        }
+                    });
+
+                    const popup = document.getElementById(`popup-${folder}`);
+                    if (popup.style.display !== 'block') {
+                        fetch(`/files_in_folder/${folder}`)
+                        .then(response => response.json())
+                        .then(files => {
+                            popup.innerHTML = '';
+                            files.forEach(file => {
+                            const a = document.createElement('a');
+                            a.href = "#";
+                            a.textContent = file;
+                            a.addEventListener('click', function(event) {
+                                event.preventDefault();
+                                // Redirection vers /chatbot avec filePath = "folder/file"
+                                window.location.href = `/chatbot?filePath=${encodeURIComponent(folder + '/' + file)}`;
+                            });
+                            popup.appendChild(a);
+                            popup.appendChild(document.createElement('br'));
+                            });
+                            popup.style.display = 'block';
+                        });
+                    }
+                    // Annuler le masquage si le délai était engagé
+                    if (hideTimeout) {
+                        clearTimeout(hideTimeout);
+                        hideTimeout = null;
+                    }
+                    }
+
+                    // Fonction qui masque la popup après un court délai
+                    function hidePopup() {
+                    const popup = document.getElementById(`popup-${folder}`);
+                    hideTimeout = setTimeout(() => {
+                        popup.style.display = 'none';
+                    }, 300); // délai de 300ms avant de masquer la popup
+                    }
+
+                    // Lorsque la souris entre sur le dossier, on affiche la popup
+                    folderItem.addEventListener('mouseenter', showPopup);
+                    // Lorsque la souris quitte le dossier, on démarre le délai de masquage
+                    folderItem.addEventListener('mouseleave', hidePopup);
+
+                    // Pour la popup elle-même, on garde le même comportement
+                    const popup = document.getElementById(`popup-${folder}`);
+                    popup.addEventListener('mouseenter', function() {
+                    if (hideTimeout) {
+                        clearTimeout(hideTimeout);
+                        hideTimeout = null;
+                    }
+                    });
+                    popup.addEventListener('mouseleave', hidePopup);
+                });
+                });
+            });
+    </script>
+{% endblock %}

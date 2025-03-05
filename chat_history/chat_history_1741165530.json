@@ -1,0 +1,27 @@
+[
+    {
+        "Query": "Quel est la capitale de la France ?",
+        "Answer": " La capitale de la France est Paris.",
+        "Document": null
+    },
+    {
+        "Query": "Quel est la capitale de la France ?",
+        "Answer": " La capitale de la France est Paris.",
+        "Document": "None"
+    },
+    {
+        "Query": "Quel est la capitale de la France ?",
+        "Answer": " La capitale de la France est Paris.",
+        "Document": "None"
+    },
+    {
+        "Query": "Quel est la capitale de la France ?",
+        "Answer": " La capitale de la France est Paris.",
+        "Document": "None"
+    },
+    {
+        "Query": "Pourquoi Paris s'appelle Paris ?",
+        "Answer": " La ville de Paris a \u00e9t\u00e9 nomm\u00e9e ainsi en l'honneur de son fondateur, le prince gaulois Par\u00eds ou Parice. Selon la l\u00e9gende, ce prince a fond\u00e9 la ville sur l'\u00eele de la Cit\u00e9 apr\u00e8s avoir battu les Senons qui occupaient alors cette r\u00e9gion. Par cons\u00e9quent, la ville est appel\u00e9e Paris en son honneur. Cependant, il faut noter que les \u00e9tymologies peuvent varier selon les sources.",
+        "Document": "None"
+    }
+]
