@@ -13,7 +13,8 @@ Médical : obtenir des réponses sur son bilan de santé.
 Entreprise : créer un assistant pour les collaborateurs, contenant des données confidentielles sur l'entreprise.  
 Éducatif : concevoir un assistant répondant aux questions sur des cours spécifiques.  
 
-Comment cela fonctionne ?  
+Comment cela fonctionne ? 
+  
 Les documents PDF sont traités, nettoyés, puis classifiés dans l'index.  
 Un index inversé est mis en place pour optimiser les recherches, et un score TF-IDF est précalculé pour améliorer les performances du moteur de recherche.  
 Ce projet intègre un LLM qui, associé à l'architecture RAG et à une base de données vectorielle, est capable de répondre à des questions basées sur le contenu des fichiers PDF et ainsi de générer des résumés et des réponses pertinentes. réponses pertinantes.  
@@ -71,9 +72,9 @@ pip install -r requirements.txt
 python -m spacy download fr_core_news_sm
 ```
 
-3. Installez Ollama avec Mistral
-Téléchargez et installez l'application Ollama : https://ollama.com
-Une fois Ollama lancé, ajoutez Mistral :
+3. Installez Ollama avec Mistral  
+Téléchargez et installez l'application Ollama : https://ollama.com  
+Une fois Ollama lancé, ajoutez Mistral :  
 ```sh
 ollama pull mistral
 ollama list
@@ -81,7 +82,7 @@ ollama list
 
 
 ## Utilisation
-Lancez l'application Flask :
+Lancez l'application Flask :  
 ```sh
 python app.py
 ```
