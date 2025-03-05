@@ -24,35 +24,35 @@ Ce projet intègre un LLM qui, associé à l'architecture RAG et à une base de 
 
 ### Arboressence :
 
-SearchEngine/              
-├── chat_history/               # Stockage de l'historique des chats
-|
-├── data/                       # Dossier contenant la bibliothèque de PDF et l'index de recherche               
-│   ├── index.json                # Fichier JSON pour l'indexation des documents
-│   ├── Cours AI/
-│   ├── Management/             
-│   ├── Perso/                  
-│   └── temp/                     # Sous-dossier temporaire pour les fichiers déposés
-|
-├── static/                     # Dossier pour les fichiers statiques (CSS, images, JS)
-│   ├── css/                    
-│   ├── images/                
-│   └── js/
-|
-├── templates/                  # Dossier pour les templates HTML
-│   ├── base.html                 # Template de base pour l'application
-│   ├── chatbot.html              # Template pour l'interface de chatbot
-│   └── home.html                 # Template pour la page d'accueil
-|
-├── vectorestore/               # Dossier pour le stockage des vecteurs de recherche
-|
-├── app.py                      # Fichier principal de l'application Flask
-├── clean.py                    # Script pour nettoyer les PDFs et les intégrer à l'index
-├── research.py                 # Script pour la recherche des documents
-├── localRAG.py                 # Script pour l'exécution local du Chatbot avec RAG
-|
-├── README.md                   
-└── LICENSE                    
+SearchEngine/  
+├── chat_history/               # Stockage de l'historique des chats  
+|  
+├── data/                       # Dossier contenant la bibliothèque de PDF et l'index de recherche  
+│   ├── index.json                # Fichier JSON pour l'indexation des documents  
+│   ├── Cours AI/  
+│   ├── Management/  
+│   ├── Perso/  
+│   └── temp/                     # Sous-dossier temporaire pour les fichiers déposés  
+|  
+├── static/                     # Dossier pour les fichiers statiques (CSS, images, JS)  
+│   ├── css/  
+│   ├── images/  
+│   └── js/  
+|  
+├── templates/                  # Dossier pour les templates HTML  
+│   ├── base.html                 # Template de base pour l'application  
+│   ├── chatbot.html              # Template pour l'interface de chatbot  
+│   └── home.html                 # Template pour la page d'accueil  
+|  
+├── vectorestore/               # Dossier pour le stockage des vecteurs de recherche  
+|  
+├── app.py                      # Fichier principal de l'application Flask  
+├── clean.py                    # Script pour nettoyer les PDFs et les intégrer à l'index  
+├── research.py                 # Script pour la recherche des documents  
+├── localRAG.py                 # Script pour l'exécution local du Chatbot avec RAG  
+|  
+├── README.md  
+└── LICENSE  
 
 
 ## Installation
